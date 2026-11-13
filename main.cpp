@@ -1,3 +1,4 @@
+#include "librotary.h"
 #include <iostream>
 #include <string>
 #include <sys/ioctl.h>
@@ -6,12 +7,10 @@
 
 using namespace std;
 
-void startscrn() {
-	cout << "\x1b[?1049h";
-}
+void startscrn() { cout << "\x1b[?1049h"; }
 
 void raw_mode() {
-	  termios ts;
+  termios ts;
   tcgetattr(0, &ts);
   ts.c_iflag &= ~IXON;
   ts.c_lflag &= ~(ECHO | ICANON);
@@ -19,5 +18,5 @@ void raw_mode() {
 }
 
 void move_curs(int cy, int cx) {
-	cout << "\x1b[" + to_string(cy) + ";" + to_string(cx) + "H";
+  cout << "\x1b[" + to_string(cy) + ";" + to_string(cx) + "H";
 }
