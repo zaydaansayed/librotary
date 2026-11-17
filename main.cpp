@@ -7,7 +7,9 @@
 
 using namespace std;
 
-void startscrn() { cout << "\x1b[?1049h"; }
+void startscrn() { cout << "\x1b[?1049h" << "\x1b[2J"; }
+
+void closescrn() { cout << "\x1b[?1049l"; }
 
 void raw_mode() {
   termios ts;
