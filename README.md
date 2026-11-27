@@ -115,6 +115,8 @@ the row and `x` is the column, both starting at `0` in the top-left corner.
 | --- | --- |
 | `void raw_mode()` | Put the terminal in raw mode (no echo, no line buffering, no signals). |
 | `int read_key()` | Block until a key or mouse event arrives and return its code. |
+| `void hide_curs()` | Hides the cursor. |
+| `void show_curs()` | Shows the cursor. |
 
 `read_key()` returns a plain `char` for ordinary keys (e.g. `'q'`, `'\n'`), or one
 of the following values:

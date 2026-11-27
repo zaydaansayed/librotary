@@ -93,6 +93,10 @@ void move_curs(int y, int x) {
        << std::flush;
 }
 
+void hide_curs() { cout << "\x1b[?25l"; }
+
+void show_curs() { cout << "\x1b[?25h"; }
+
 int rows() {
   winsize ws{};
   ioctl(1, TIOCGWINSZ, &ws);
