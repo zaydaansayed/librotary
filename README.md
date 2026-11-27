@@ -133,6 +133,7 @@ Mouse coordinates for the most recent event are available through
 | Function | Description |
 | --- | --- |
 | `void print(int y, int x, std::string_view text)` | Write `text` at the given position and clear the rest of the line. |
+| `void p_thin_line(int y, int x)` | Draws a thin line at the given position "│". |
 | `void flush()` | Lets the text show instantly without moving the cursor. |
 | `void move_curs(int y, int x)` | Move the cursor to the given position. |
 | `void invert()` | Start inverse video (swap foreground and background). |

@@ -18,7 +18,9 @@ enum Key {
 void startscrn();
 void closescrn();
 void flush();
+void clrscrn();
 void print(int y, int x, std::string_view text);
+void p_thin_line(int y, int x);
 int read_key();
 int mouse_x();
 int mouse_y();
