@@ -29,8 +29,6 @@ void p_thin_line(int y, int x) {
   cout << "\x1b[" + to_string(y + 1) + ";" + to_string(x + 1) + "H" << "│";
 }
 
-void clrscrn() { cout << "\x1b[2J"; }
-
 int mx = 0, my = 0;
 int mouse_x() { return mx - 1; }
 int mouse_y() { return my - 1; }
