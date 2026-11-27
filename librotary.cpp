@@ -46,30 +46,38 @@ int read_key() {
   read(0, &seq[1], 1);
 
   if (seq[0] == '[') {
-    if (seq[1] == '<') {
-      string buf;
-      char ch = 0;
-      while (read(0, &ch, 1) == 1 && ch != 'M' && ch != 'm')
-        buf += ch;
+    string params;
+    char t = seq[1];
+    while (t < 0x40 || t > 0x7E) {
+      params += t;
+      if (read(0, &t, 1) != 1)
+        break;
+    }
 
-      int b = 0, x = 0, y = 0;
-      sscanf(buf.c_str(), "%d;%d;%d", &b, &mx, &my);
-
+    if (!params.empty() && params[0] == '<') {
+      int b = 0;
+      sscanf(params.c_str() + 1, "%d;%d;%d", &b, &mx, &my);
+      if (t == 'm' || (b & 32))
+        return 0;
       if (b == 64)
         return MOUSE_UP;
       if (b == 65)
         return MOUSE_DOWN;
-      else
-        return MOUSE_CLICK;
+      return MOUSE_CLICK;
     }
-    if (seq[1] == 'A')
+
+    bool ctrl = (params == "1;5");
+    switch (t) {
+    case 'A':
       return KEY_UP;
-    if (seq[1] == 'B')
+    case 'B':
       return KEY_DOWN;
-    if (seq[1] == 'C')
-      return KEY_RIGHT;
-    if (seq[1] == 'D')
-      return KEY_LEFT;
+    case 'C':
+      return ctrl ? KEY_CTRL_RIGHT : KEY_RIGHT;
+    case 'D':
+      return ctrl ? KEY_CTRL_LEFT : KEY_LEFT;
+    }
+    return 0;
   }
   return '\x1b';
 }
