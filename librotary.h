@@ -22,6 +22,8 @@ void closescrn();
 void flush();
 void print(int y, int x, std::string_view text);
 void p_thin_line(int y, int x);
+void hide_curs();
+void show_curs();
 int read_key();
 int mouse_x();
 int mouse_y();
