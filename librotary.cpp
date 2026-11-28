@@ -1,4 +1,5 @@
 #include "librotary.h"
+#include <csignal>
 #include <iostream>
 #include <string>
 #include <sys/ioctl.h>
@@ -10,6 +11,9 @@ using namespace std;
 namespace rotary {
 
 termios original;
+
+volatile sig_atomic_t resized = 0;
+void on_winch(int) { resized = 1; }
 
 void startscrn() { cout << "\x1b[?1049h\x1b[2J\x1b[?7l\x1b[?1002h\x1b[?1006h"; }
 
@@ -35,7 +39,12 @@ int mouse_y() { return my - 1; }
 
 int read_key() {
   char c = 0;
-  read(0, &c, 1);
+  if (read(0, &c, 1) != 1) {
+    if (resized) {
+      resized = 0;
+    }
+    return 0;
+  }
   if (c != '\x1b')
     return c;
 
@@ -86,6 +95,10 @@ void raw_mode() {
   ts.c_iflag &= ~IXON;
   ts.c_lflag &= ~(ECHO | ICANON | ISIG);
   tcsetattr(0, TCSAFLUSH, &ts);
+
+  struct sigaction sa{};
+  sa.sa_handler = on_winch;
+  sigaction(SIGWINCH, &sa, nullptr);
 }
 
 void move_curs(int y, int x) {
